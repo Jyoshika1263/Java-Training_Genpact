@@ -1,0 +1,63 @@
+package com.onlinebookshop.shop.model;
+
+import java.util.Date;
+
+public class Order {
+    private int id;
+    private int book_id;
+    private int quantity;
+    private Date order_date;
+    
+    public Order() {
+        super();
+    }
+ 
+    public Order(int id, int book_id, int quantity, Date order_date) {
+        super();
+        this.id = id;
+        this.book_id = book_id;
+        this.quantity = quantity;
+        this.order_date = order_date;
+    }
+    public Order(int id, int book_id, int quantity) {
+        super();
+        this.id = id;
+        this.book_id = book_id;
+        this.quantity = quantity;
+       // this.order_date = order_date;
+    }
+ 
+    public int getId() {
+        return id;
+    }
+ 
+    public void setId(int id) {
+        this.id = id;
+    }
+ 
+    public int getBookId() {
+        return book_id;
+    }
+ 
+    public void setBookId(int book_id) {
+        this.book_id = book_id;
+    }
+ 
+    public int getQuantity() {
+        return quantity;
+    }
+ 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+ 
+    public Date getOrderDate() {
+        return order_date;
+    }
+ 
+    public void setOrderDate(Date order_date) {
+        this.order_date = order_date;
+    }
+ 
+ 
+}
