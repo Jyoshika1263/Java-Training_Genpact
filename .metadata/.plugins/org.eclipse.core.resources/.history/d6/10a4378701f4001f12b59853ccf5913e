@@ -1,0 +1,64 @@
+package com.onlinebookshop.shop;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.onlinebookshop.shop.model.Book;
+import com.onlinebookshop.shop.service.BookService;
+
+@SpringBootApplication
+public class ShopApplication implements CommandLineRunner{
+	//inject the service layer
+	@Autowired
+	private BookService bookService;
+
+	public static void main(String[] args) {
+		SpringApplication.run(ShopApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		// TODO Auto-generated method stub
+		//test the services
+		
+		//add books
+		Book book1=new Book(1,"New Book JDBC",300.00,1);
+		Book book2=new Book(1,"New Book JDBC 2",310.00,3);
+		bookService.addBook(book1);
+		bookService.addBook(book2);
+		System.out.println("books added successfully");
+		
+		//fetch all books
+		List<Book> books=bookService.getAllBooks();
+		System.out.println("----book list----");
+		books.forEach(book ->
+		  System.out.println("Book ID :"+book.getId()+",Title :" +book.getTitle()+",Price:"+book.getPrice())
+		 );
+		
+		//get book by id
+		int bookId=1;
+		Book foundBook = bookService.getBookById(bookId);
+		//add a print
+		//update
+		foundBook.setPrice(450.00);
+		bookService.updateBook(foundBook);
+		//add a print ->book id - 1,updated price is this
+		//delete
+		int bookId2=3;
+		bookService.deleteById(bookId2);
+		//print ->book with this id deleted
+		
+		//fetch updated book list
+		bookService.getAllBooks().forEach(book ->
+		  System.out.println("Book ID :"+book.getId()+",Title :" +book.getTitle()+",Price:"+book.getPrice())
+		 );
+		
+		
+	}
+
+}

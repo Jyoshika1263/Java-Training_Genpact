@@ -1,0 +1,5 @@
+package com.onlinebookshop.shop.config;
+
+public class AppConfig {
+
+}

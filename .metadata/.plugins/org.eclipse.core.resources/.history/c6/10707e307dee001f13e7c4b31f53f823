@@ -1,0 +1,60 @@
+package JUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class OrderServicesTest {
+	 
+		@Test
+		void test() {
+			OrderServices os=new OrderServices();
+			assertEquals(450, os.calPrice(50, 10));
+			//fail("Not yet implemented");
+		}
+	 
+		@Test
+		void testException()
+		{
+			OrderServices os=new OrderServices();
+			IllegalArgumentException exception=assertThrows(IllegalArgumentException.class, ()->{
+				os.placeOrder(12);
+			});
+		}	
+	
+}	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//	@Test
+//    public void testInsufficientStocks() {
+//        OrderServices orderServices = new OrderServices();
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            orderServices.placeOrder(15);
+//        });
+//    }
+//
+//    @Test
+//    public void testCalculateTotal() {
+//        OrderServices orderServices = new OrderServices();
+//        double price = 100.0;
+//        int quantity = 2;
+//        double expectedTotal = price * quantity * (1 - orderServices.getDiscount());
+//        assertEquals(expectedTotal, orderServices.calPrice(price, quantity));
+//    }

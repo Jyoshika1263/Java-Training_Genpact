@@ -1,0 +1,5 @@
+package com.onlinebookshop.shop.model;
+
+public class Author {
+
+}

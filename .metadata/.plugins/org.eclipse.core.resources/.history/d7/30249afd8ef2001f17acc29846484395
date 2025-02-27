@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- bean definitions here -->
+        <!--  Address Bean (Setter Injection) it will use setter methods in address class-->
+        <bean id="address" class="com.ems.EMS.model.Address">
+                  <property name="street" value="123 Main St."></property>
+                  <property name="city" value="New Delhi"></property>
+                  <property name="state" value="Delhi"></property>
+                  <property name="zipcode" value="143890"></property>
+        </bean>
+        <!-- Department Bean (Constructor injection) -->
+        <bean id ="department" class="com.ems.EMS.model.Department">
+             <constructor-arg value="101"></constructor-arg>
+             <constructor-arg value="IT" />
+        </bean>
+        <!--  Employee Bean - constructor injection -->
+        <!-- reference bean, address, dept -> refer to those beans -->
+        <!-- list of skills, inject for collections -->
+        <bean id="employee" class="com.ems.EMS.model.Employee" >
+                <constructor-arg value="1"></constructor-arg>
+                <constructor-arg value="Neelima"></constructor-arg>
+                <constructor-arg value="neelima@gmail.com"></constructor-arg>
+                <constructor-arg value="12152367"></constructor-arg>
+                <constructor-arg value="50000"></constructor-arg>
+                <constructor-arg value="software engineer"></constructor-arg>
+                <constructor-arg ref="address"></constructor-arg>
+                <constructor-arg ref="department"></constructor-arg>
+                <constructor-arg>
+                  <list>
+                  <value>Java</value>
+                  <value>MySQL</value>
+                  <value>SpringFramework</value>
+                  </list>
+                </constructor-arg>
+        </bean>
+        <!-- payroll bean setter -->
+        <bean id="payroll" class="com.ems.EMS.model.Payroll">
+                  <property name="employeeId" value="1"></property>
+                  <property name="baseSalary" value="50000"></property>
+                  <property name="bonuses" value="8787"></property>
+                  <property name="deduction" value="6476"></property>
+        </bean>
+        <!-- performance bean setter, 3 project in list -->
+        <bean id="performance" class="com.ems.EMS.model.Performance">
+                  <property name="employeeId" value="1"></property>
+                  <property name="rating" value="6"></property>
+                  <property name="feedback" value="performance was good"></property>
+                  <property name="projectsHandled" >
+                     <list>
+                        <value>p1</value>
+                        <value>p2</value>
+                        <value>p3</value>
+                     </list>
+                   </property>
+                  <property name="eligibleForPromotion" value="true"></property>
+        </bean>
+        <!-- hr bean -->
+        <bean id="hr" class="com.ems.EMS.model.HR">
+        <property name="employeeRecords">
+            <map>
+              <entry key="1" value-ref="employee" />
+            </map>
+        </property>
+        </bean>
+</beans>

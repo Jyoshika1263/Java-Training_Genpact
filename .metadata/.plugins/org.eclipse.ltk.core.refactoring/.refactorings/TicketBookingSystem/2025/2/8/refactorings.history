@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;MovieTicketBooking.loginUser.java&apos; to &apos;UserLogin.java&apos;&#x0D;&#x0A;- Original project: &apos;TicketBookingSystem&apos;&#x0D;&#x0A;- Original element: &apos;MovieTicketBooking.loginUser.java&apos;&#x0D;&#x0A;- Renamed element: &apos;MovieTicketBooking.UserLogin.java&apos;" description="Rename compilation unit &apos;loginUser.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;MovieTicketBooking{loginUser.java" name="UserLogin.java" references="false" stamp="1739765631086" version="1.0"/>
+</session>
