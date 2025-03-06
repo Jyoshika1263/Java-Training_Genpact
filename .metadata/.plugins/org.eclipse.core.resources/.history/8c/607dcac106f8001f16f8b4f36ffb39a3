@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Books List</title>
+<style>
+ 
+        table, th, td {
+ 
+            border: 1px solid black;
+ 
+            border-collapse: collapse;
+ 
+            padding: 8px;
+ 
+        }
+</style>
+</head>
+<body>
+<h1>Books Available</h1>
+<ul id="bookList"></ul>
+ 
+<label for="bookId">Enter Book Id : </label>
+<input type="number" id="bookId">
+<button onClick="fetchBookById()"> Search Book </button>
+ 
+<h2>Book Details</h2>
+<p id="bookDetails"></p>
+<h2>Add a New Book</h2>
+<label for="newBookId">Book Id:</label>
+<input type="number" id="newBookId"><br>
+<label for="newBookTitle">Title:</label>
+<input type="text" id="newBookTitle"><br>
+<label for="newBookPrice">Price:</label>
+<input type="number" id="newBookPrice"><br>
+<label for="newAuthorId">Author Id:</label>
+<input type="number" id="newAuthorId"><br>
+<button onclick="submitBooks()">Click to add</button>
+ 
+<script>
+ 
+fetch('/api/books')
+    .then(response => response.json())
+    .then(data => {
+    	const list = document.getElementById('bookList');
+        data.forEach(book => {
+        	const li = document.createElement('li');
+        	li.textContent = `${book.title} having price ${book.price} with author id ${book.authorId}`;
+        	list.appendChild(li);
+        })
+    })
+    .catch(error => console.error('Error fetching books data :error'));
+    function fetchBookById(){
+    	const bookId = document.getElementById("bookId").value;
+    	if(!bookId){
+    		alert("Please enter some book id");
+    		return;
+    	}
+    	fetch(`/api/books/${bookId}`)
+    	   .then(response =>{
+    		   if(!response.ok){
+    			   throw new Error("Book not found");
+    		   }
+    		   return response.json();
+    	   })
+    	   .then(book =>{
+    		   document.getElementById("bookDetails").textContent = 
+    			   `Title:${book.title} || Price :${book.price} || Author ID : ${book.author_id}`;
+    	   })
+    	   .catch(error => {
+    		   document.getElementById("bookDetails").textContent="book not found";
+    	   })
+    	// Add a new book
+        function addBook() {
+            const newBookId = document.getElementById("newBookId").value;
+            const newBookTitle = document.getElementById("newBookTitle").value;
+            const newBookPrice = document.getElementById("newBookPrice").value;
+            const newAuthorId = document.getElementById("newAuthorId").value;
+ 
+            if (!newBookId || !newBookTitle || !newBookPrice || !newAuthorId) {
+                alert("Please fill in all fields");
+                return;
+            }
+ 
+            const newBook = {
+                id: newBookId,
+                title: newBookTitle,
+                price: newBookPrice,
+                authorId: newAuthorId
+            };
+ 
+            fetch('/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newBook)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to add book");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("Book added successfully");
+                // Optionally, update the book list dynamically
+                const list = document.getElementById('bookList');
+                const li = document.createElement('li');
+                li.textContent = `${data.title} having price ${data.price} with author id ${data.authorId}`;
+                list.appendChild(li);
+            })
+            .catch(error => {
+                console.error('Error adding book:', error);
+                alert("Error adding book");
+            });
+        }
+ 
+        // Submit books (dummy function for demonstration)
+        function submitBooks() {
+            alert("Books submitted successfully");
+        }		
+    }
+</script>
+
+</body>
+</html>

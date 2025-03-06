@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Books lists</title>
+</head>
+<body>
+     <h1>Books Available</h1>
+     <ul id="booklist"></ul>
+     <script>
+//fetch books dynamically
+     fetch('/api/books')
+         .then(response => response.json())
+         .then(data => {
+	     const list=document.getElementById('booklist');
+	      data.forEach(book => {
+		  const li=document.createElement('li');
+		   li.textContent=`${book.title} having price ${book.price} with author id ${book.author_id}`;
+		   li.appendChild(li);
+	   })
+    })
+    .catch(error => console.log('Error fetching books data:',error));
+</script>
+

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> JavaScript </title>
+</head>
+<body>
+<h1>Books Available</h1>
+<ul id="bookslist">
+<script>
+     //fetch books dynamically
+     fetch('/api/books')
+     //get response
+
+</script></ul>
+
+// books.html
+//table
+//html+js
+------------
+//Books available
+//display
+//Title    Price  AuthorId */
+
+display all books list
+:search book |_________| -> input box -> id only
+    submit -> button
+    display based on that id
+

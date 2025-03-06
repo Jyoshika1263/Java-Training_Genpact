@@ -1,0 +1,25 @@
+//import from math.js, using named import
+
+import {add, sub, PI } from './math.js';
+import {add as sum,sub as difference} from './math.js'
+
+//import default
+import greet from './utility.js';
+//import both types
+import greetMath, {add, PI} from './math.js';
+//import everything
+//java.util.*;
+import * as MathUtils from './math.js';
+
+console.log(add(23,34));
+console.log(sub(23,34));
+console.log(PI);
+//second way
+
+//import with Alias names
+
+console.log(sum(23,34));
+console.log(difference(23,34));
+console.log(greet("Tanuj"));
+console.log(MathUtils.add(23,23));
+//calling 

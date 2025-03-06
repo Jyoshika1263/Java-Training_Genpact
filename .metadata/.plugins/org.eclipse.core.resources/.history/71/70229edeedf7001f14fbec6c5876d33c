@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Books availability</title>
+<link rel="stylesheet" href="style1.css">
+</head>
+<body>
+<h1>Books Available</h1>
+
+<div>
+        <label for="searchId">Search book by ID:</label>
+        <input type="number" id="searchId" placeholder="Enter book ID">
+        <button onclick="searchBook()">Submit</button>
+    </div>
+
+    <!-- Books List Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Author ID</th>
+            </tr>
+        </thead>
+        <tbody id="bookslist">
+            <!-- Dynamic content will be inserted here -->
+        </tbody>
+    </table>
+ <script>
+        // Fetch all books and display in the table
+        fetch('/api/books')
+            .then(response => response.json())
+            .then(data => {
+                const booksList = document.getElementById('bookslist');
+                data.forEach(book => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${book.title}</td>
+                        <td>${book.price}</td>
+                        <td>${book.authorId}</td>
+                    `;
+                    booksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching books:', error));
+
+        // Function to search for a book by ID and display it
+        function searchBook() {
+            const searchId = document.getElementById('searchId').value;
+            if (searchId) {
+                fetch(`/api/books/${searchId}`)
+                    .then(response => response.json())
+                    .then(book => {
+                        const booksList = document.getElementById('bookslist');
+                        booksList.innerHTML = ''; // Clear existing list
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${book.title}</td>
+                            <td>${book.price}</td>
+                            <td>${book.authorId}</td>
+                        `;
+                        booksList.appendChild(row);
+                    })
+                    .catch(error => console.error('Error fetching book:', error));
+            } else {
+                alert('Please enter a valid book ID.');
+            }
+        }
+    </script>
+
+</body>
+</html>
+

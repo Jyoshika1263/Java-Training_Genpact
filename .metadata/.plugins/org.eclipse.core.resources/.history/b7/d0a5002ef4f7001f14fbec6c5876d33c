@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Books lists</title>
+</head>
+<body>
+<h1>Books Available</h1>
+<ul id="bookList"></ul>
+<!-- book by id setup -->
+<label for="bookId">enter book id:</label>
+<input type="number" id="bookId">
+<button onClick="fetchBookById()">Search Book</button>
+<h2>Book details : </h2>
+<p id="bookDetails"></p>
+<script>
+		//fetch books dynamically
+		fetch('/api/books')
+		.then(response => response.json())
+		.then(data => {
+			const list = document.getElementById('bookList');
+			data.forEach(book => {
+				const li = document.createElement('li');
+				li.textContent = `${book.title} having price ${book.price} with author id ${book.authorId}`;
+				list.appendChild(li);
+			})
+		})
+		.catch(error => console.error('Error fetching books data', error));
+		//fetch book by id
+		function fetchBookById() {
+			const bookid=document.getElementById('bookId').value;
+			if(bookId){
+				alert("Please enter some book id");
+				return;
+			}
+			fetch(`/api/books/${bookId}`)
+			.then(response => {
+				if(!response.ok){
+					throw new Error("Book not found");
+				}
+				return response.json();
+			})
+			.then(book => {
+				document.getElementById("bookDetails").textContent=
+			`Title: ${book.title} || Price : ${book.price} || Author ID : ${book.authorId}`;
+			})
+			.catch(error => {
+				document.getElementById("bookDetails").textContent="Book not found";
+			})
+		}
+</script>
+</body>
+</html>
+
