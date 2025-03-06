@@ -1,0 +1,330 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Book System</title>
+</head>
+<body>
+<h1>Orders available</h1>
+<ul id="orderList"></ul>
+ 
+    <label for="orderId">Enter order id:</label>
+<input type="number" id="orderId">
+<button onclick="fetchOrderById()">Search order</button>
+ 
+    <h2>Order details:</h2>
+<p id="orderDetails"></p>
+ 
+    <h2>Add a new order</h2>
+<label for="newOrderId">Order id:</label>
+<input type="number" id="newOrderId"><br>
+<label for="newOrderTitle">Title:</label>
+<input type="text" id="newOrderTitle"><br>
+<label for="newOrderPrice">Price:</label>
+<input type="number" id="newOrderPrice"><br>
+<label for="newAuthorId">Author id:</label>
+<input type="number" id="newAuthorId"><br>
+<button onclick="submitOrders()">Submit</button>
+ 
+    <h2>Delete a order</h2>
+<label for="deleteOrderId">Enter order id to delete:</label>
+<input type="number" id="deleteOrderId"><br>
+<button onclick="deleteOrder()">Delete</button>
+<h2>Update a order</h2>
+<label for="updateOrderId">Order id:</label>
+<input type="number" id="updateOrderId"><br>
+<label for="updateOrderTitle">Title:</label>
+<input type="text" id="updateOrderTitle"><br>
+<label for="updateOrderPrice">Price:</label>
+<input type="number" id="updateOrderPrice"><br>
+<label for="updateOrderId">Author id:</label>
+<input type="number" id="updateOrderId"><br>
+<button onclick="updateOrder()">Update</button>
+<script>
+
+        // Fetch books dynamically
+
+        fetch('/api/orders')
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            const list = document.getElementById('orderList');
+
+            data.forEach(order => {
+
+                const li = document.createElement('li');
+
+                li.textContent = `${order.bookId} having quantity ${order.quantity} with date ${order.orderDate}`;
+
+                list.appendChild(li);
+
+            });
+
+        })
+
+        .catch(error => console.error('Error fetching order data', error)); 
+ 
+        // Fetch book by id
+
+         function fetchOrderById() {
+
+            const orderId = document.getElementById("orderId").value;
+
+            if (!orderId) {
+
+                alert("Please enter some order id");
+
+                return;
+
+            }
+
+            fetch(`api/orders/${orderId}`)
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error("Order not found");
+
+                }
+
+                return response.text();
+
+            })
+
+            .then(order => {
+
+                document.getElementById("orderDetails").textContent =
+
+                    `Title: ${orders.bookId} || Price: ${order.quantity} || Author ID: ${order.orderDate}`;
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("orderDetails").textContent = "Order not found";
+
+            });
+
+        }
+
+        // Submit books (dummy function for demonstration)
+
+        function submitOrders() {
+
+            const newOrderId = document.getElementById("newOrderId").value;
+
+            const newOrderBookId = document.getElementById("newOrderBookId").value;
+
+            const newOrderQuantity = document.getElementById("newOrderQuantity").value;
+
+            
+ 
+            if (!newOrderId || !newOrderBookId || !newOrderQuantity ) {
+
+                alert("Please fill in all fields");
+
+                return;
+
+            }
+ 
+            const newOrder = {
+
+                id: newOrderId,
+
+                bookId: newOrderBookId,
+
+                quantity: newOrderQuantity
+
+            };
+ 
+            fetch('/api/orders', {
+
+                method: 'POST',
+
+                headers: {
+
+                    'Content-Type': 'application/json'
+
+                },
+
+                body: JSON.stringify(newOrder)
+
+            })
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error("Failed to add order");
+
+                }
+
+                return response.text();
+
+            })
+
+            .then(data => {
+
+                alert("Order added successfully");
+
+                // Optionally, update the book list dynamically
+
+                const list = document.getElementById('orderList');
+
+                const li = document.createElement('li');
+
+                li.textContent = `Order Id: ${data.id}   Order Book Id: ${data.bookId}   Order Quantity:  ${data.quantity}`;
+
+                list.appendChild(li);
+
+            })
+
+            .catch(error => {
+
+                console.error('Error adding order:', error);
+
+                alert("Error adding order");
+
+            });
+
+            fetch('/api/orders')
+
+        	.then(response => response.json())
+ 
+        	.then(data => {
+ 
+        		const list = document.getElementById('orderList');
+ 
+        		data.forEach(book => {
+ 
+        			const li = document.createElement('li');
+ 
+        			 li.textContent = `Book Id: ${data.id}   Book Title: ${data.title}   Book Price:  ${data.price}   Author id:  ${data.authorId}`;
+
+                     list.appendChild(li);
+ 
+        		})
+ 
+        	})
+ 
+        	.catch(error => console.error('Error fetching books data', error));
+
+        }
+
+async function deleteBook() {
+
+     const deleteBookId = document.getElementById('deleteBookId').value;
+
+     if (!deleteBookId) {
+
+         alert("Please enter a valid book ID to delete.");
+
+         return;
+
+     }
+ 
+     try {
+
+         const response = await fetch(`/api/books/${deleteBookId}`, {
+
+             method: "DELETE"
+
+         });
+ 
+         if (!response.ok) {
+
+             throw new Error("Failed to delete book");
+
+         }
+ 
+         alert(`Book with ID ${deleteBookId} deleted successfully!`);    
+
+     } catch (error) {
+
+         console.error('Error deleting book:', error);
+
+     }
+
+}
+
+function updateBook() {
+
+     const updateBookId = document.getElementById("updateBookId").value;
+
+     const updateBookTitle = document.getElementById("updateBookTitle").value;
+
+     const updateBookPrice = document.getElementById("updateBookPrice").value;
+
+     const updateAuthorId = document.getElementById("updateAuthorId").value;
+ 
+     if (!updateBookId || !updateBookTitle || !updateBookPrice || !updateAuthorId) {
+
+         alert("Please fill in all fields");
+
+         return;
+
+     }
+ 
+     const updatedBook = {
+
+         title: updateBookTitle,
+
+         price: updateBookPrice,
+
+         authorId: updateAuthorId
+
+     };
+ 
+     fetch(`/api/books/${updateBookId}`, {
+
+         method: 'PUT',
+
+         headers: {
+
+             'Content-Type': 'application/json'
+
+         },
+
+         body: JSON.stringify(updatedBook)
+
+     })
+
+     .then(response => {
+
+         if (!response.ok) {
+
+             throw new Error("Failed to update book");
+
+         }
+
+         return response.text();
+
+     })
+
+     .then(data => {
+
+         alert("Book updated successfully");
+
+         fetchBooks(); // Fetch and print all books after updating a book
+
+     })
+
+     .catch(error => {
+
+         console.error('Error updating book:', error);
+
+         alert("Error updating book");
+
+     });
+
+}
+
+</script>
+</body>
+</html>
+-->
+  
