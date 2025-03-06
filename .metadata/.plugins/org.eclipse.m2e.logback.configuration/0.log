@@ -2618,3 +2618,4 @@ java.net.URISyntaxException: Illegal character in path at index 16: file:/C:/Pro
 2025-03-05 17:35:24,088 [Worker-137: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2025-03-05 17:35:24,134 [Worker-137: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 11 resources from src\main\resources to target\classes
 2025-03-05 17:35:24,178 [Worker-137: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\shop\src\test\resources
+2025-03-06 09:39:59,819 [Worker-6: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
