@@ -3,14 +3,13 @@ import axios, { AxiosResponse } from "axios";
 const API_URL = "http://localhost:5050/api/billings";
 
 interface Billing {
-  bill_id: number;
-  PatientID: number;
+  billID: number;
+  patientID: number;
   amount: number;
-  payment_status: string;
-  billing_time: string;
-  payment_method: string;
-  billing_status: string;
-  created_by: number;
+  paymentStatus: string;
+  paymentMethod: string;
+  billingStatus: string;
+  createdBy: number;
 }
 
 class BillingService {
@@ -23,7 +22,7 @@ class BillingService {
   }
 
   registerBilling(billing: Billing): Promise<AxiosResponse<Billing>> {
-    return axios.post(`${API_URL}/register`, billing);
+    return axios.post(`${API_URL}/add`, billing);
   }
 
   deleteBilling(id: number): Promise<AxiosResponse<void>> {

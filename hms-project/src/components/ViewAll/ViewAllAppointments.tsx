@@ -3,14 +3,13 @@ import AppointmentService from "../../services/AppointmentService";
 import { Grid, Table, Edit, Trash2, Plus } from "lucide-react";
 
 interface Appointment {
-  AppointmentID: number;
-  PatientID: number;
-  DoctorID: number;
-  AppointmentDate: string;
-  AppointmentTime: string;
+  appointmentID: number;
+  patientID: number;
+  doctorID: number;
+  appointmentDate: string;
+  appointmentTime: string;
   appointmentType: string;
-  Reason: string;
-  registration_time: string;
+  reason: string;
 }
 
 const ViewAllAppointments: React.FC = () => {
@@ -32,14 +31,13 @@ const ViewAllAppointments: React.FC = () => {
   }, []);
 
   const [appointmentData, setAppointmentData] = useState<Appointment>({
-    AppointmentID: 0,
-    PatientID: 0,
-    DoctorID: 0,
-    AppointmentDate: "",
-    AppointmentTime: "",
+    appointmentID: 0,
+    patientID: 0,
+    doctorID: 0,
+    appointmentDate: "",
+    appointmentTime: "",
     appointmentType: "",
-    Reason: "",
-    registration_time: "",
+    reason: "",
   });
 
   const handleEdit = (appointment: Appointment) => {
@@ -47,9 +45,9 @@ const ViewAllAppointments: React.FC = () => {
     setAppointmentData(appointment);
   };
 
-  const handleDelete = (AppointmentID: number) => {
-    console.log(`Delete appointment with ID: ${AppointmentID}`);
-    AppointmentService.deleteAppointment(AppointmentID);
+  const handleDelete = (appointmentID: number) => {
+    console.log(`Delete appointment with ID: ${appointmentID}`);
+    AppointmentService.deleteAppointment(appointmentID);
     window.location.reload();
   };
 
@@ -68,12 +66,12 @@ const ViewAllAppointments: React.FC = () => {
   };
   const validateForm = (): string[] => {
     const errorsList: string[] = [];
-    if (!appointmentData.PatientID) errorsList.push("Patient ID is required.");
-    if (!appointmentData.DoctorID) errorsList.push("Doctor ID is required.");
-    if (!appointmentData.AppointmentDate.trim()) errorsList.push("Appointment Date is required.");
-    if (!appointmentData.AppointmentTime.trim()) errorsList.push("Appointment Time is required.");
+    if (!appointmentData.patientID) errorsList.push("Patient ID is required.");
+    if (!appointmentData.doctorID) errorsList.push("Doctor ID is required.");
+    if (!appointmentData.appointmentDate.trim()) errorsList.push("Appointment Date is required.");
+    if (!appointmentData.appointmentTime.trim()) errorsList.push("Appointment Time is required.");
     if (!appointmentData.appointmentType.trim()) errorsList.push("Appointment Type is required.");
-    if (!appointmentData.Reason.trim()) errorsList.push("Reason is required.");
+    if (!appointmentData.reason.trim()) errorsList.push("Reason is required.");
     return errorsList;
   };
   const handleUpdateSubmit = (event: React.FormEvent) => {
@@ -83,7 +81,7 @@ const ViewAllAppointments: React.FC = () => {
       setErrors(validationErrors);
       return;
     }
-    AppointmentService.updateAppointment(appointmentData, appointmentData.AppointmentID);
+    AppointmentService.updateAppointment(appointmentData, appointmentData.appointmentID);
     console.log("Update Form submitted");
     closeModal();
     window.location.reload();
@@ -137,21 +135,19 @@ const ViewAllAppointments: React.FC = () => {
                 <th className="py-2 px-4 border-b">Appointment Time</th>
                 <th className="py-2 px-4 border-b">Type</th>
                 <th className="py-2 px-4 border-b">Reason</th>
-                <th className="py-2 px-4 border-b">Registration Time</th>
                 <th className="py-2 px-4 border-b rounded-tr-lg">Actions</th>
               </tr>
             </thead>
             <tbody>
               {appointments.map(appointment => (
-                <tr key={appointment.AppointmentID} className="hover:bg-gray-50">
-                  <td className="py-2 px-4 border-b">{appointment.AppointmentID}</td>
-                  <td className="py-2 px-4 border-b">{appointment.PatientID}</td>
-                  <td className="py-2 px-4 border-b">{appointment.DoctorID}</td>
-                  <td className="py-2 px-4 border-b">{new Date(appointment.AppointmentDate).toLocaleDateString()}</td>
-                  <td className="py-2 px-4 border-b">{appointment.AppointmentTime}</td>
+                <tr key={appointment.appointmentID} className="hover:bg-gray-50">
+                  <td className="py-2 px-4 border-b">{appointment.appointmentID}</td>
+                  <td className="py-2 px-4 border-b">{appointment.patientID}</td>
+                  <td className="py-2 px-4 border-b">{appointment.doctorID}</td>
+                  <td className="py-2 px-4 border-b">{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
+                  <td className="py-2 px-4 border-b">{appointment.appointmentTime}</td>
                   <td className="py-2 px-4 border-b">{appointment.appointmentType}</td>
-                  <td className="py-2 px-4 border-b">{appointment.Reason}</td>
-                  <td className="py-2 px-4 border-b">{new Date(appointment.registration_time).toLocaleDateString()}</td>
+                  <td className="py-2 px-4 border-b">{appointment.reason}</td>
                   <td className="py-2 px-4 border-b flex space-x-2">
                     <button
                       className="text-blue-600 hover:text-blue-900"
@@ -161,7 +157,7 @@ const ViewAllAppointments: React.FC = () => {
                     </button>
                     <button
                       className="text-red-600 hover:text-red-900"
-                      onClick={() => handleDelete(appointment.AppointmentID)}
+                      onClick={() => handleDelete(appointment.appointmentID)}
                     >
                       <Trash2 size={24} />
                     </button>
@@ -174,9 +170,9 @@ const ViewAllAppointments: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {appointments.map(appointment => (
-            <div key={appointment.AppointmentID} className="bg-white p-4 rounded-lg shadow-md">
+            <div key={appointment.appointmentID} className="bg-white p-4 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-bold">Appointment ID: {appointment.AppointmentID}</h2>
+                <h2 className="text-xl font-bold">Appointment ID: {appointment.appointmentID}</h2>
                 <div className="flex space-x-2">
                   <button
                     className="text-blue-600 hover:text-blue-900"
@@ -186,19 +182,18 @@ const ViewAllAppointments: React.FC = () => {
                   </button>
                   <button
                     className="text-red-600 hover:text-red-900"
-                    onClick={() => handleDelete(appointment.AppointmentID)}
+                    onClick={() => handleDelete(appointment.appointmentID)}
                   >
                     <Trash2 size={24} />
                   </button>
                 </div>
               </div>
-              <p><strong>Patient ID:</strong> {appointment.PatientID}</p>
-              <p><strong>Doctor ID:</strong> {appointment.DoctorID}</p>
-              <p><strong>Appointment Date:</strong> {new Date(appointment.AppointmentDate).toLocaleDateString()}</p>
-              <p><strong>Appointment Time:</strong> {appointment.AppointmentTime}</p>
+              <p><strong>Patient ID:</strong> {appointment.patientID}</p>
+              <p><strong>Doctor ID:</strong> {appointment.doctorID}</p>
+              <p><strong>Appointment Date:</strong> {new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+              <p><strong>Appointment Time:</strong> {appointment.appointmentTime}</p>
               <p><strong>Type:</strong> {appointment.appointmentType}</p>
-              <p><strong>Reason:</strong> {appointment.Reason}</p>
-              <p><strong>Registration Time:</strong> {new Date(appointment.registration_time).toLocaleDateString()}</p>
+              <p><strong>Reason:</strong> {appointment.reason}</p>
             </div>
           ))}
         </div>
@@ -226,9 +221,9 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Patient ID</label>
                   <input
                     type="number"
-                    name="PatientID"
+                    name="patientID"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedAppointment.PatientID}
+                    defaultValue={selectedAppointment.patientID}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -236,9 +231,9 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Doctor ID</label>
                   <input
                     type="number"
-                    name="DoctorID"
+                    name="doctorID"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedAppointment.DoctorID}
+                    defaultValue={selectedAppointment.doctorID}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -246,9 +241,9 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Appointment Date</label>
                   <input
                     type="date"
-                    name="AppointmentDate"
+                    name="appointmentDate"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedAppointment.AppointmentDate}
+                    defaultValue={selectedAppointment.appointmentDate}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -256,9 +251,9 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Appointment Time</label>
                   <input
                     type="text"
-                    name="AppointmentTime"
+                    name="appointmentTime"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedAppointment.AppointmentTime}
+                    defaultValue={selectedAppointment.appointmentTime}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -276,9 +271,9 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Reason</label>
                   <input
                     type="text"
-                    name="Reason"
+                    name="reason"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedAppointment.Reason}
+                    defaultValue={selectedAppointment.reason}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>  
@@ -325,7 +320,7 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Patient ID</label>
                   <input
                     type="number"
-                    name="PatientID"
+                    name="patientID"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -334,7 +329,7 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Doctor ID</label>
                   <input
                     type="number"
-                    name="DoctorID"
+                    name="doctorID"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -343,7 +338,7 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Appointment Date</label>
                   <input
                     type="date"
-                    name="AppointmentDate"
+                    name="appointmentDate"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -352,7 +347,7 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Appointment Time</label>
                   <input
                     type="text"
-                    name="AppointmentTime"
+                    name="appointmentTime"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -370,7 +365,7 @@ const ViewAllAppointments: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Reason</label>
                   <input
                     type="text"
-                    name="Reason"
+                    name="reason"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />

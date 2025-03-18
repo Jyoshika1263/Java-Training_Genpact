@@ -3,16 +3,14 @@ import BillingService from "../../services/BillingService";
 import { Grid, Table, Edit, Trash2, Plus } from "lucide-react";
 
 interface Billing {
-  bill_id: number;
-  PatientID: number;
+  billID: number;
+  patientID: number;
   amount: number;
-  payment_status: string;
-  billing_time: string;
-  payment_method: string;
-  billing_status: string;
-  created_by: number;
+  paymentStatus: string;
+  paymentMethod: string;
+  billingStatus: string;
+  createdBy: number;
 }
-
 const ViewAllBilling: React.FC = () => {
   const [billings, setBillings] = useState<Billing[]>([]);
   const [viewMode, setViewMode] = useState<"table" | "card">("table");
@@ -32,14 +30,13 @@ const ViewAllBilling: React.FC = () => {
   }, []);
 
   const [billingData, setBillingData] = useState<Billing>({
-    bill_id: 0,
-    PatientID: 0,
+    billID: 0,
+    patientID: 0,
     amount: 0,
-    payment_status: "",
-    billing_time: "",
-    payment_method: "",
-    billing_status: "",
-    created_by: 0,
+    paymentStatus: "",
+    paymentMethod: "",
+    billingStatus: "",
+    createdBy: 0,
   });
 
   const handleEdit = (billing: Billing) => {
@@ -47,9 +44,9 @@ const ViewAllBilling: React.FC = () => {
     setBillingData(billing);
   };
 
-  const handleDelete = (bill_id: number) => {
-    console.log(`Delete billing with ID: ${bill_id}`);
-    BillingService.deleteBilling(bill_id);
+  const handleDelete = (billID: number) => {
+    console.log(`Delete billing with ID: ${billID}`);
+    BillingService.deleteBilling(billID);
     window.location.reload();
   };
 
@@ -66,14 +63,13 @@ const ViewAllBilling: React.FC = () => {
   const handleUpdateChange = (e: { target: { name: any; value: any; }; }) => {
     setBillingData({ ...billingData, [e.target.name]: e.target.value });
   };
-  const validateForm = (): string[] => {
+  const validateForm = () : string[]=> {
     const errorsList: string[] = [];
-    if (!billingData.PatientID) errorsList.push("Patient ID is required.");
+    if (!billingData.patientID) errorsList.push("Patient ID is required.");
     if (!billingData.amount || billingData.amount <= 0) errorsList.push("Amount must be a positive number.");
-    if (!billingData.payment_status.trim()) errorsList.push("Payment status is required.");
-    if (!billingData.billing_time.trim()) errorsList.push("Billing time is required.");
-    if (!billingData.payment_method.trim()) errorsList.push("Payment method is required.");
-    if (!billingData.billing_status.trim()) errorsList.push("Billing status is required.");
+    if (!billingData.paymentStatus.trim()) errorsList.push("Payment status is required.");
+    if (!billingData.paymentMethod.trim()) errorsList.push("Payment method is required.");
+    if (!billingData.billingStatus.trim()) errorsList.push("Billing status is required.");
     return errorsList;
   };
 
@@ -84,7 +80,7 @@ const ViewAllBilling: React.FC = () => {
       setErrors(validationErrors);
       return;
     }
-    BillingService.updateBilling(billingData, billingData.bill_id);
+    BillingService.updateBilling(billingData, billingData.billID);
     console.log("Update Form submitted");
     closeModal();
     window.location.reload();
@@ -135,7 +131,6 @@ const ViewAllBilling: React.FC = () => {
                 <th className="py-2 px-4 border-b">Patient ID</th>
                 <th className="py-2 px-4 border-b">Amount</th>
                 <th className="py-2 px-4 border-b">Payment Status</th>
-                <th className="py-2 px-4 border-b">Billing Time</th>
                 <th className="py-2 px-4 border-b">Payment Method</th>
                 <th className="py-2 px-4 border-b">Billing Status</th>
                 <th className="py-2 px-4 border-b">Created By</th>
@@ -144,15 +139,14 @@ const ViewAllBilling: React.FC = () => {
             </thead>
             <tbody>
               {billings.map(billing => (
-                <tr key={billing.bill_id} className="hover:bg-gray-50">
-                  <td className="py-2 px-4 border-b">{billing.bill_id}</td>
-                  <td className="py-2 px-4 border-b">{billing.PatientID}</td>
+                <tr key={billing.billID} className="hover:bg-gray-50">
+                  <td className="py-2 px-4 border-b">{billing.billID}</td>
+                  <td className="py-2 px-4 border-b">{billing.patientID}</td>
                   <td className="py-2 px-4 border-b">{billing.amount}</td>
-                  <td className="py-2 px-4 border-b">{billing.payment_status}</td>
-                  <td className="py-2 px-4 border-b">{new Date(billing.billing_time).toLocaleDateString()}</td>
-                  <td className="py-2 px-4 border-b">{billing.payment_method}</td>
-                  <td className="py-2 px-4 border-b">{billing.billing_status}</td>
-                  <td className="py-2 px-4 border-b">{billing.created_by}</td>
+                  <td className="py-2 px-4 border-b">{billing.paymentStatus}</td>
+                  <td className="py-2 px-4 border-b">{billing.paymentMethod}</td>
+                  <td className="py-2 px-4 border-b">{billing.billingStatus}</td>
+                  <td className="py-2 px-4 border-b">{billing.createdBy}</td>
                   <td className="py-2 px-4 border-b flex space-x-2">
                     <button
                       className="text-blue-600 hover:text-blue-900"
@@ -162,7 +156,7 @@ const ViewAllBilling: React.FC = () => {
                     </button>
                     <button
                       className="text-red-600 hover:text-red-900"
-                      onClick={() => handleDelete(billing.bill_id)}
+                      onClick={() => handleDelete(billing.billID)}
                     >
                       <Trash2 size={24} />
                     </button>
@@ -175,9 +169,9 @@ const ViewAllBilling: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {billings.map(billing => (
-            <div key={billing.bill_id} className="bg-white p-4 rounded-lg shadow-md">
+            <div key={billing.billID} className="bg-white p-4 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-bold">Bill ID: {billing.bill_id}</h2>
+                <h2 className="text-xl font-bold">Bill ID: {billing.billID}</h2>
                 <div className="flex space-x-2">
                   <button
                     className="text-blue-600 hover:text-blue-900"
@@ -187,19 +181,18 @@ const ViewAllBilling: React.FC = () => {
                   </button>
                   <button
                     className="text-red-600 hover:text-red-900"
-                    onClick={() => handleDelete(billing.bill_id)}
+                    onClick={() => handleDelete(billing.billID)}
                   >
                     <Trash2 size={24} />
                   </button>
                 </div>
               </div>
-              <p><strong>Patient ID:</strong> {billing.PatientID}</p>
+              <p><strong>Patient ID:</strong> {billing.patientID}</p>
               <p><strong>Amount:</strong> {billing.amount}</p>
-              <p><strong>Payment Status:</strong> {billing.payment_status}</p>
-              <p><strong>Billing Time:</strong> {new Date(billing.billing_time).toLocaleDateString()}</p>
-              <p><strong>Payment Method:</strong> {billing.payment_method}</p>
-              <p><strong>Billing Status:</strong> {billing.billing_status}</p>
-              <p><strong>Created By:</strong> {billing.created_by}</p>
+              <p><strong>Payment Status:</strong> {billing.paymentStatus}</p>
+              <p><strong>Payment Method:</strong> {billing.paymentMethod}</p>
+              <p><strong>Billing Status:</strong> {billing.billingStatus}</p>
+              <p><strong>Created By:</strong> {billing.createdBy}</p>
             </div>
           ))}
         </div>
@@ -227,9 +220,9 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Patient ID</label>
                   <input
                     type="number"
-                    name="PatientID"
+                    name="patientID"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.PatientID}
+                    defaultValue={selectedBilling.patientID}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -247,19 +240,9 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Payment status</label>
                   <input
                     type="text"
-                    name="payment_status"
+                    name="paymentStatus"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.payment_status}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Billing time</label>
-                  <input
-                    type="text"
-                    name="billing_time"
-                    onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.billing_time}
+                    defaultValue={selectedBilling.paymentStatus}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -267,9 +250,9 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Payment method</label>
                   <input
                     type="text"
-                    name="payment_method"
+                    name="paymentMethod"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.payment_method}
+                    defaultValue={selectedBilling.paymentMethod}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -277,9 +260,9 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Billing Status</label>
                   <input
                     type="text"
-                    name="billing_status"
+                    name="billingStatus"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.billing_status}
+                    defaultValue={selectedBilling.billingStatus}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -287,9 +270,9 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Created by</label>
                   <input
                     type="number"
-                    name="created_by"
+                    name="createdBy"
                     onChange={handleUpdateChange}
-                    defaultValue={selectedBilling.created_by}
+                    defaultValue={selectedBilling.createdBy}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
@@ -336,7 +319,7 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Patient ID</label>
                   <input
                     type="number"
-                    name="PatientID"
+                    name="patientID"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -354,25 +337,17 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">payment_status</label>
                   <input
                     type="text"
-                    name="payment_status"
+                    name="paymentStatus"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Billing time</label>
-                  <input
-                    type="text"
-                    name="billing_time"
-                    onChange={handleRegisterChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
-                  />
-                </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Payment method</label>
                   <input
                     type="text"
-                    name="payment_method"
+                    name="paymentMethod"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -381,7 +356,7 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Billing status</label>
                   <input
                     type="text"
-                    name="billing_status"
+                    name="billingStatus"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />
@@ -390,7 +365,7 @@ const ViewAllBilling: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">Created by</label>
                   <input
                     type="number"
-                    name="created_by"
+                    name="createdBy"
                     onChange={handleRegisterChange}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"
                   />

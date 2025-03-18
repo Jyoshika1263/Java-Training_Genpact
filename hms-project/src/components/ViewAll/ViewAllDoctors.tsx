@@ -121,7 +121,7 @@ const handleUpdateSubmit = (event: React.FormEvent) => {
     window.location.reload();
 };
 // Form validation checks
-const validateForm = () => {
+const validateForm = (): string[] => {
   const errorsList: string[] = [];
   if (!doctorData.firstName.trim()) errorsList.push("First Name is required.");
   if (!doctorData.lastName.trim()) errorsList.push("Last Name is required.");

@@ -3,14 +3,13 @@ import axios, { AxiosResponse } from "axios";
 const API_URL = "http://localhost:5050/api/appointments";
 
 interface Appointment {
-  AppointmentID: number;
-  PatientID: number;
-  DoctorID: number;
-  AppointmentDate: string;
-  AppointmentTime: string;
+  appointmentID: number;
+  patientID: number;
+  doctorID: number;
+  appointmentDate: string;
+  appointmentTime: string;
   appointmentType: string;
-  Reason: string;
-  registration_time: string;
+  reason: string;
 }
 
 class AppointmentService {
@@ -23,7 +22,7 @@ class AppointmentService {
   }
 
   registerAppointment(appointment: Appointment): Promise<AxiosResponse<Appointment>> {
-    return axios.post(`${API_URL}/register`, appointment);
+    return axios.post(`${API_URL}/add`, appointment);
   }
 
   deleteAppointment(id: number): Promise<AxiosResponse<void>> {
